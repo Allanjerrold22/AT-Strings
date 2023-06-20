@@ -1,0 +1,11 @@
+Model Information:
+* title:	Ghost
+* source:	https://sketchfab.com/3d-models/ghost-d364a9e81c81407aa045815ac5da63ec
+* author:	sxlmrt (https://sketchfab.com/sxlmrt)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Ghost" (https://sketchfab.com/3d-models/ghost-d364a9e81c81407aa045815ac5da63ec) by sxlmrt (https://sketchfab.com/sxlmrt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
