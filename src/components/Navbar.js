@@ -7,12 +7,27 @@ import './Navbar.css'
 import { Link } from "react-scroll";
 
 import { Button } from "@mui/material";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithCredential,
+} from "firebase/auth";
+import {app} from "../lib/firebaseConfig"
+import cart from './assets/shopping-cart.svg'
+import wishlist from './assets/wishlist.svg';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(false)
+  let navigate = useNavigate();
 
+  const [state, setState] = useState({})
+
+  const auth = getAuth(app);
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar)
   }
@@ -50,23 +65,36 @@ const Navbar = () => {
         <div className={`nav-elements  ${showNavbar && 'active'}`}>
           <ul style={{alignItems:'center'}}>
             <li>
-            <Link activeClass="active" >Home </Link>
+            <Link activeClass="active" smooth spy to="Home"> Home </Link>      
             </li>
             <li>
-              <NavLink to="/blog">Products</NavLink>
+            <Link activeClass="active" smooth spy to="Products"> Products </Link>
             </li>
             
             <li>
-              <NavLink to="/about">About</NavLink>
+            <Link activeClass="active" smooth spy to="About"> About </Link>
             </li>
             <li>
-              <NavLink to="/contact">Contact</NavLink>
+            <Link activeClass="active" smooth spy to="Contact"> Contact Us </Link>
             </li>
-
             <li>
-              <Button variant="contained" className='mapbtn' style={{background:'#252525',borderRadius:20,paddingRight:32,paddingLeft:32}} >
-                Sign up
-              </Button>
+              <img src={cart} style={{width:26,height:26}}/> 
+            </li>
+            <li>
+              <img src={wishlist} style={{width:26,height:26}}/> 
+            </li>
+            <li>
+             { state &&  <Button onClick={()=> {
+                if(auth.currentUser) {
+                  auth.signOut()
+                  handleShowNavbar()
+                }
+                else navigate("/SignIn")
+              }} variant="contained" className='mapbtn' style={{background:'#252525',borderRadius:20,paddingRight:32,paddingLeft:32}} >
+                {auth.currentUser ? "Logout"  : "Sign up"}
+                {/* Sign up */}
+              </Button>}
+              <p>{auth.currentUser ? auth.currentUser.email : ""}</p>
             </li>
           </ul>
         </div>

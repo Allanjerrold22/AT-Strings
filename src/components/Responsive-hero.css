@@ -1,0 +1,72 @@
+.hero-bg {
+    width: 600px;
+    height: 600px;
+    object-fit: contain;
+    margin-top: 50px;
+  }
+  .hero-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100vh;
+    background: #EEEEEE;
+  }
+  .headertext {
+    font-size: 48px;
+    font-family: Helvetica;
+    font-weight: 800;
+    color: black;
+    text-align: left;
+    margin: 0;
+  }
+  
+  .headerdes {
+    font-size: 18px;
+    font-family: Helvetica;
+    font-weight: 500;
+    color: #656565;
+    text-align: left;
+    margin: 0;
+    margin-top: 16px;
+  }
+  
+  
+  /* Media query for screens less than 600px wide */
+  @media screen and (max-width: 700px) {
+    .hero-container {
+        flex-direction: column-reverse;        /* align-items: flex-start;  */
+      }
+    
+      /* Adjust styles for the hero image */
+      .hero-bg {
+        width: 100%; /* To make the image take the full width */
+        height: auto; /* To maintain the aspect ratio */
+      }
+    
+      /* Add styles for the hero text box */
+      .hero-text-box {
+        text-align: center;
+        margin-bottom:32px;
+        
+      }
+      p.headertext{
+        text-align: center;
+        font-size: 32px;
+        font-family: Helvetica;
+        font-weight: 800;
+        color: black;
+        margin: 0;
+      }
+      p.headerdes {
+        font-size: 16px;
+        font-family: Helvetica;
+        font-weight: 500;
+        color: #656565;
+        text-align: center;
+        margin: 0;
+        margin-top: 16px;
+      }
+
+  }

@@ -8,7 +8,7 @@ import '../App.css'
 import { margin } from "@mui/system";
 const Contact=()=>{
     return(
-        <div>
+        <div id="Contact">
 
 <p style={{marginTop:32,fontSize:14,fontWeight:40,color:'#656565',textAlign:'center',marginTop:50}}>Contact us</p>
             <p style={{textAlign:'center',fontSize:18,fontWeight:450,marginRight:16,marginLeft:16,marginTop:32}}>We would love to answer your queries and appreciate your feedbacks</p>

@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { Typography } from "@mui/material";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 import * as THREE from 'three'
+import '../Navbar.css'
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useFrame, useLoader } from "@react-three/fiber";
@@ -96,13 +97,13 @@ const Model = () => {
               backgroundRepeat: 'no-repeat',
 
               }}>
-      {/* <div className={'text-container'} style={{position:'relative',top:80}}>
-      <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+      <div className={'text-container'} style={{position:'relative',top:60}}>
+    
         
-      <img src={srmlogo} style={{width:42,height:42}}/>
-      <Typography style={{fontSize:24,fontFamily:'Helvetica',fontWeight:800,color:'#2525252',marginTop:10}}
+      {/* <img  style={{width:42,height:42}}/> */}
+      {/* <Typography style={{fontSize:24,fontFamily:'Helvetica',fontWeight:800,color:'#2525252',marginTop:10}}
             variant="h6"
-            align="center"
+            align="left"
             color="grey.700"
             sx={{
               backgroundcolor: "primary",
@@ -115,14 +116,14 @@ const Model = () => {
             }}>
           
           Biodiversity of SRM
-    </Typography>  
-      <p style={{fontSize:20,fontFamily:'Helvetica',fontWeight:600,color:'#2525252'}}>Biodiversity of SRM</p>
-      <p style={{fontSize:16,fontFamily:'Helvetica',fontWeight:400,color:'#767676',marginRight:20,marginLeft:20,textAlign:'center'}}>"Unlock the Secrets of Nature <br/>Explore SRM University's Green Campus with a Simple Scan!" </p>
-      </div>
-      </div>   */}
+    </Typography>   */}
+      <p className="headertext" style={{fontSize:38,fontFamily:'Helvetica',fontWeight:800,color:'white',textAlign:'left',margin:0,position:'relative',top:100,left:50}}>Crafting beauty <br/>one thread at a time.</p>
+      <p className="headerdes" style={{fontSize:18,fontFamily:'Helvetica',fontWeight:500,color:'white',textAlign:'left',margin:0,position:'relative',top:120,left:50,zIndex:10}}>Unlocking the artistry of strings <br/>our team weaves stunning masterpieces that blend <br/> creativity and precision </p>
+  
+      </div>  
       
     
-    <Canvas style={{height:400}}
+    <Canvas style={{height:400,position:'absolute',top:0}}
       frameloop='demand'
       shadows
       dpr={[1, 2]}

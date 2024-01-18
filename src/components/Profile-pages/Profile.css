@@ -1,0 +1,39 @@
+.profile-card{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.refer-card {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    --border-size: 3px;
+    --border-angle: 0turn;
+    width: 60vmin;
+    height: 50vmin;
+    background-image: conic-gradient(
+        from var(--border-angle),
+        #fff,
+        #fff 50%,
+        #fff
+      ),
+      conic-gradient(from var(--border-angle), transparent 20%, #A56EE0, #FFBFCC);
+    background-size: calc(100% - (var(--border-size) * 2)) calc(100% - (var(--border-size) * 2)),
+      cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    animation: bg-spin 3s linear infinite;
+  }
+  
+  @keyframes bg-spin {
+    to {
+      --border-angle: 1turn;
+    }
+  }
+  
+  .refer-card:hover {
+    animation-play-state: paused;
+  }
+  
+  @property --border-angle {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0turn;
+  }
+  

@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import Spline from '@splinetool/react-spline';
 import { Application } from '@splinetool/runtime';
 import { Model } from "./Canvas";
 import { Button } from "@mui/material";
 import Card from "./Card"
 import Responsivecard from "./Responsivecard"
-import { useState } from "react";
 import { DeviceSize } from "./Responsive/index";
 import { useMediaQuery } from 'react-responsive'
 import Slider from '@mui/material/Slider';
+import HeroSection from "./HeroSection";
+import { client } from '../lib/client';
 
 
 
@@ -40,14 +41,29 @@ const marks = [
 
 
 const Home=()=>{
+
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+
+
+
+
+    // Example: Fetch some data from Sanity using the client instance
+    const query = '*[_type == "products"]';
+    client.fetch(query)
+    .then(data => setProducts(data))
+    .catch(error => console.error('Error fetching data:', error));
+}, []);
+
     const [stackIndex, setStackIndex] = useState(0)
 
     const isMobile = useMediaQuery({ maxWidth: DeviceSize.mobile });
     const isDesktop = useMediaQuery({ maxWidth: DeviceSize.desktop });
 
     return(
-        <div>
-            <Model/>
+        <div >
+            {/* <Model/> */}
+            <HeroSection/>
             {/* <script type="module" src="https://unpkg.com/@splinetool/viewer@0.9.369/build/spline-viewer.js"></script> */}
             {/* <Spline scene="https://prod.spline.design/8iicmyuud5MIJyP0/scene.splinecode" ></Spline> */}    
             {/* <Spline scene="https://prod.spline.design/dlXkeklUUPvUBKOI/scene.splinecode"></Spline> */}
@@ -86,19 +102,21 @@ const Home=()=>{
 
 
         
-            <div className="card-layout" style={{display:'flex',alignItems:'center',justifyContent:'space-evenly',flexWrap:'wrap',marginTop:20}}>
+            <div className="card-layout" id="Products" style={{display:'flex',alignItems:'center',justifyContent:'space-evenly',flexWrap:'wrap',marginTop:20}}>
            
-            {isMobile && <Responsivecard />}
-                {isMobile && <Responsivecard />}
-                {isMobile && <Responsivecard />}    
-                {isMobile && <Responsivecard />}
+                {products.map((ele,index)=>{
+                  
+                return(
+                <>
+              {console.log(ele)}
+                {!isDesktop && <Card name={ele.name} images={ele.images} price={ele.price} ratings={ele.ratings} description={ele.description} size={ele.size} reviews={ele.reviews}/>}
+                {isMobile && <Responsivecard name={ele.name} images={ele.images} price={ele.price} ratings={ele.ratings} description={ele.description} size={ele.size} reviews={ele.reviews} id={ele.key ?? "pochu"}/>}
 
-
-
-                {!isDesktop && <Card />}
-                {!isDesktop && <Card />}
-                {!isDesktop && <Card />}
-                {!isDesktop && <Card />}
+                </>
+                        )
+                      })
+                    }
+               
 
             </div>
 
