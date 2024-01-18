@@ -21,19 +21,20 @@ import { SnackbarProvider, useSnackbar } from "notistack";
 import Review from "../Elements/Review";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
+import { getAuth } from "firebase/auth";
+import { app } from "../../lib/firebaseConfig"
 import { urlFor, client } from "../../lib/client";
 import { usersUrlFor, usersClient } from "../../lib/usersClient";
 
 function Details(props) {
   const location = useLocation();
   const _state = location.state;
-  console.log(location);
   const [state, setState] = useState({});
 
-  const [_products, _setProducts]=useState([])
+  const [_products, _setProducts] = useState([])
 
 
+  const auth = getAuth(app)
 
   useEffect(() => {
     // Example: Fetch some data from Sanity using the client instance
@@ -44,21 +45,23 @@ function Details(props) {
         const filtered = data.filter((curr) => curr.key == _state.id)[0]
         setState(filtered)
         const query = '*[_type == "users"]';
-        let lis = [] 
-    
-        client.fetch(query)   
-        .then(data => {
-              data.map((ele)=>{
-          ele.User.filter((curr)=>curr.uid == "69").forEach((item,inx)=>{
-            lis = [...lis, item.list]
-          })
-        })
-        lis.forEach((ele)=>{
-          if(ele[0].name == filtered.name) setIsHeartClicked(true)
-        })
-          _setProducts(lis)}
+        let lis = []
+
+        client.fetch(query)
+          .then(data => {
+            data.map((ele) => {
+              ele.User.filter((curr) => curr.uid == auth.currentUser.uid).forEach((item, inx) => {
+                console.log(item);
+                lis = [...lis, item.list]
+              })
+            })
+            lis.forEach((ele) => {
+              if (ele[0].name == filtered.name) setIsHeartClicked(true)
+            })
+            _setProducts(lis)
+          }
           )
-        .catch(error => console.error('Error fetching data:', error));
+          .catch(error => console.error('Error fetching data:', error));
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
@@ -68,14 +71,14 @@ function Details(props) {
 
   async function upload() {
 
-    var uniqid = Math.random().toString(36).substring(2,7);
+    var uniqid = Math.random().toString(36).substring(2, 7);
     client
       .create({
         _type: "users",
-        _id:'69' + _state.id,
+        _id: _state.id + auth.currentUser.uid,
         User: [
           {
-            uid: '69',
+            uid: _state.id + auth.currentUser.uid,
             list: [
               {
                 name: state.name,
@@ -90,14 +93,14 @@ function Details(props) {
         ],
       })
       .then(() => {
-        _setProducts(curr => ([...curr,  {
+        _setProducts(curr => ([...curr, {
           name: state.name,
           rating: state.ratings,
           cover: state.images ? urlFor(state.images[0]) : "",
           price: state.price ?? 0,
           size: state.size ?? "24 x 24",
           key: _state.id
-        }, ]))
+        },]))
         handleClickVariant("success")(); // Call your notification function here
 
         LikeClick(); // Call the function to toggle the heart icon source
@@ -108,18 +111,65 @@ function Details(props) {
       });
   }
 
-  const handleClickWithNotification = () => {
-    if(!isHeartClicked) upload()
-    else {
-      client
-      .delete("69" + _state.id)
-      .then(response => {
-        console.log('Document deleted:', response);
-        setIsHeartClicked(false)
+  async function uploadCart() {
+
+    var uniqid = Math.random().toString(36).substring(2, 7);
+    client
+      .create({
+        _type: "users",
+        _id: _state.id + auth.currentUser.uid + "cart",
+        User: [
+          {
+            uid: _state.id + auth.currentUser.uid + "cart",
+            list: [
+              {
+                name: state.name,
+                rating: state.ratings,
+                cover: state.images ? urlFor(state.images[0]) : "",
+                price: state.price ?? 0,
+                size: "219 x 24",
+                key: _state.id
+              },
+            ],
+          },
+        ],
       })
-      .catch(error => {
-        console.error('Error deleting document:', error);
+      .then(() => {
+        enqueueSnackbar(" Product added to Cart", {
+          action,
+        });
+
+      })
+      .catch((error) => {
+        console.error(error.message);
+        
       });
+  }
+
+  const handleClickWithNotification = () => {
+    if (auth.currentUser) {
+
+      if (!isHeartClicked) upload()
+      else {
+    // client.fetch('*[_type == "users"]').then((res)=>{
+    //   console.log(res)
+    // })
+    // console.log(auth.currentUser.uid);
+        client
+          .delete({
+            query: `*[_type == "users" && _id == $uid]`,
+            params: { uid: _state.id + auth.currentUser.uid },
+          }).then(response => {
+            console.log('Document deleted:', response);
+            setIsHeartClicked(false)
+          })
+          .catch(error => {
+            console.error('Error deleting document:', error);
+          });
+      }
+    } else {
+      enqueueSnackbar("Please sign in");
+
     }
   };
 
@@ -144,14 +194,24 @@ function Details(props) {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleClick = () => {
-    enqueueSnackbar(" Product added to Cart", {
-      action,
-    });
+    if (auth.currentUser) {
+     uploadCart()
+    } else {
+      enqueueSnackbar("Please sign in");
+    }
+
   };
   const handleClickVariant = function (variant) {
     return function () {
       // variant could be success, error, warning, info, or default
-      enqueueSnackbar("Product added to wishlist", { variant });
+      if (auth.currentUser) {
+        console.log(auth.currentUser);
+        enqueueSnackbar("Product added to wishlist", { variant });
+
+      } else {
+        enqueueSnackbar("Please sign in");
+
+      }
     };
   };
 
@@ -246,7 +306,7 @@ function Details(props) {
         </div>
         <div className="details" key={state._id}>
           <div className="big-img">
-            <img src={state.images ? urlFor(state.images[index]) : ""} alt="" style={{height:200,width:500,objectFit:'cover'}} />
+            <img src={state.images ? urlFor(state.images[index]) : ""} alt="" style={{ height: 200, width: 500, objectFit: 'cover' }} />
           </div>
 
           <div className="box">

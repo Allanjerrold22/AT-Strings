@@ -117,7 +117,7 @@ const Home=()=>{
                 return(
                 <>
               {console.log(ele)}
-                {!isDesktop && <Card name={ele.name} images={ele.images} price={ele.price} ratings={ele.ratings} description={ele.description} size={ele.size} reviews={ele.reviews}/>}
+                {!isDesktop && <Card name={ele.name} images={ele.images} price={ele.price} ratings={ele.ratings} description={ele.description} size={ele.size} reviews={ele.reviews} id={ele.key ?? "pochu"}/>}
                 {isMobile && <Responsivecard name={ele.name} images={ele.images} price={ele.price} ratings={ele.ratings} description={ele.description} size={ele.size} reviews={ele.reviews} id={ele.key ?? "pochu"}/>}
 
                 </>
