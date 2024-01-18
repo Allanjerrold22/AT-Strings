@@ -24,14 +24,9 @@ import OrderHistory from './components/Profile-pages/OrderHistory';
 
  function App() {
   return (
-    
     <Router>
-     
        <Routes>
    
-     
-
- 
        <Route exact path='/' element={<Landingpage/>} ></Route>
         <Route path="Home" element={<Home/>} />
         <Route path="Details" element={<Details/>} />

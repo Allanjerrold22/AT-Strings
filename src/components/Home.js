@@ -43,6 +43,8 @@ const marks = [
 const Home=()=>{
 
   const [products, setProducts] = useState([]);
+  const [staticProducts, setStaticProducts] = useState([]);
+
   useEffect(() => {
 
 
@@ -51,7 +53,9 @@ const Home=()=>{
     // Example: Fetch some data from Sanity using the client instance
     const query = '*[_type == "products"]';
     client.fetch(query)
-    .then(data => setProducts(data))
+    .then(data => {
+      setStaticProducts(data)
+      setProducts(data)})
     .catch(error => console.error('Error fetching data:', error));
 }, []);
 
@@ -76,20 +80,24 @@ const Home=()=>{
 
             </div>
 
-            <p style={{fontSize:20,fontWeight:600,color:'#252525',marginLeft:16}}> Available Decors (120)</p>
+            <p style={{fontSize:20,fontWeight:600,color:'#252525',marginLeft:16}}> Available Decors ({products.length ?? 0})</p>
 
             <div style={{display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'center',marginTop:0}}>
 
            
             <Slider
                 aria-label="Custom marks"
-                defaultValue={500}
+                defaultValue={2000}
                 getAriaValueText={valuetext}
                 step={10}
                 valueLabelDisplay="auto"
                 marks={marks}
-                min={500}
+                min={0}
                 max={2000}
+                onChange={(e)=>{
+                  console.log(e.target.value);
+                  setProducts(staticProducts.filter((ele)=>ele.price < e.target.value))
+                }}
 
                 style={{width:200,marginRight:32,color:'violet'}}
 
@@ -109,7 +117,7 @@ const Home=()=>{
                 return(
                 <>
               {console.log(ele)}
-                {!isDesktop && <Card name={ele.name} images={ele.images} price={ele.price} ratings={ele.ratings} description={ele.description} size={ele.size} reviews={ele.reviews}/>}
+                {!isDesktop && <Card name={ele.name} images={ele.images} price={ele.price} ratings={ele.ratings} description={ele.description} size={ele.size} reviews={ele.reviews} id={ele.key ?? "pochu"}/>}
                 {isMobile && <Responsivecard name={ele.name} images={ele.images} price={ele.price} ratings={ele.ratings} description={ele.description} size={ele.size} reviews={ele.reviews} id={ele.key ?? "pochu"}/>}
 
                 </>

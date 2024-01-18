@@ -13,12 +13,14 @@ import Heart1 from './assets/selected-heart.svg';
 import { motion } from 'framer-motion';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import '../App.css'
+import { useNavigate } from 'react-router-dom';
 
 import { urlFor } from '../lib/client';
 
 function Card(props){
 
- 
+  let navigate = useNavigate();
+
 
   const [isHeartClicked, setIsHeartClicked] = React.useState(false);
 
@@ -51,7 +53,7 @@ function Card(props){
          
             <div className="cardui"style={{width:240,height:260,backgroundColor:'#ffff',borderRadius:12}}>
            
-                <img src={urlFor(props.images[0])} onClick={()=>{navigate("/Details");}} style={{width:240,height:140,objectFit:'cover',borderTopLeftRadius:12,borderTopRightRadius:12}}/>
+                <img src={urlFor(props.images[0])} onClick={()=>{navigate("/Details", { state: {...props} });}} style={{width:240,height:140,objectFit:'cover',borderTopLeftRadius:12,borderTopRightRadius:12}}/>
 
                         <div className="details1" style={{marginLeft:12}}> 
                             <p style={{fontSize:16,fontWeight:400,margin:0,marginTop:8,color:'#656565'}}>{props.name}</p>
